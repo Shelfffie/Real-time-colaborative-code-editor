@@ -1,0 +1,16 @@
+{
+  "name": "real-time_collaborative_code_editor",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "dev": "tsx backend/src/index.ts"
+  }
+}
