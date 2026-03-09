@@ -1,7 +1,7 @@
 export interface SessionType {
   id?: number;
   title: string;
-  content: string;
+  content: string | null;
   created_at?: Date;
   updated_ar?: Date;
 }

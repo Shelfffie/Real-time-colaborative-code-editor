@@ -8,13 +8,16 @@ dotenv.config({ path: path.join(__dirname, "../.env") });
 
 import express from "express";
 import cors from "cors";
+import { Server } from "socket.io";
+import { createServer } from "node:http";
 import { connectDb } from "./database/connection";
 import sessionsRouter from "./routes/sessions";
 import changesRouter from "./routes/changes";
 
 const app = express();
-
-console.log("Loading .env from:", path.join(__dirname, ".env"));
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+app.set("io", io);
 
 app.use(express.json(), cors());
 const PORT: number = parseInt(process.env.PORT ?? "3000");
@@ -24,6 +27,6 @@ app.use("/changes", changesRouter);
 
 connectDb();
 
-app.listen(PORT, "0.0.0.0", () => {
+httpServer.listen(PORT, "0.0.0.0", () => {
   console.log(`Server listen at http://localhost:${PORT}`);
 });
