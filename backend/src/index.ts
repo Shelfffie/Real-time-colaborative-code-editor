@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
+import { instrument } from "@socket.io/admin-ui";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,13 +21,21 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://admin.socket.io"],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   },
+  transports: ["websocket", "polling"],
 });
 
 app.set("io", io);
-app.use(express.json(), cors());
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://admin.socket.io"],
+    credentials: true,
+  })
+);
 
 socketConn(io);
 
@@ -36,6 +45,8 @@ app.use("/sessions", sessionsRouter);
 app.use("/changes", changesRouter);
 
 connectDb();
+
+instrument(io, { auth: false, mode: "development" });
 
 httpServer.listen(PORT, "0.0.0.0", () => {
   console.log(`Server listen at http://localhost:${PORT}`);

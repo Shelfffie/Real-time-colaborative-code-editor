@@ -1,7 +1,7 @@
 import db from "../config/database";
 import type { Request, Response } from "express";
 import type { ApiResponse, SessionType } from "../types/models";
-import { responseHandler } from "../utils/res_handler";
+import { responseHandler, errorCatchHandler } from "../utils/res_handler";
 
 const createCodeSession = async (
   req: Request,
@@ -22,16 +22,31 @@ const createCodeSession = async (
     const result = await db.query(insertQuery, [title, content]);
     return responseHandler(res, 200, true, result.rows[0]);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("Server error:", error.message);
-      return responseHandler(res, 500, false, {
-        "Server error": error.message,
-      });
-    } else {
-      console.error("Unknown error:", error);
-      return responseHandler(res, 500, false, { "Server error": error });
-    }
+    errorCatchHandler(error, res);
   }
 };
 
-export { createCodeSession };
+const getCodeSession = async (
+  req: Request<{ id: string }>,
+  res: Response<ApiResponse<SessionType>>
+) => {
+  const id: number = parseInt(req.params.id);
+  try {
+    if (isNaN(id) || id <= 0) {
+      return responseHandler(res, 401, false, "Invalid id.");
+    }
+
+    const insertQuery = "Select * from sessions where id=$1";
+    const data = await db.query(insertQuery, [id]);
+
+    if (data.rows.length === 0) {
+      return responseHandler(res, 404, false, "Session not found.");
+    }
+
+    return responseHandler(res, 200, true, data.rows[0]);
+  } catch (error) {
+    errorCatchHandler(error, res);
+  }
+};
+
+export { createCodeSession, getCodeSession };

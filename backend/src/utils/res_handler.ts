@@ -11,3 +11,15 @@ export const responseHandler = <T>(
     data: resData,
   });
 };
+
+export const errorCatchHandler = <T>(error: Error | unknown, res: Response) => {
+  if (error instanceof Error) {
+    console.error("Server error:", error.message);
+    return responseHandler(res, 500, false, {
+      "Server error": error.message,
+    });
+  } else {
+    console.error("Unknown error:", error);
+    return responseHandler(res, 500, false, { "Server error": error });
+  }
+};

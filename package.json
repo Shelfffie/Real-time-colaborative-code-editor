@@ -12,5 +12,8 @@
   },
   "scripts": {
     "dev": "tsx backend/src/index.ts"
+  },
+  "dependencies": {
+    "@socket.io/admin-ui": "^0.5.1"
   }
 }
