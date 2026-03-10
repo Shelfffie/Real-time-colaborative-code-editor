@@ -12,3 +12,8 @@ export interface ApiResponse<T> {
   error?: string;
   message?: string;
 }
+
+export interface Point {
+  x: number;
+  y: number;
+}

@@ -1,6 +1,14 @@
 import type { Point } from "../types/interfaces";
 
-export function СustomCursor({ x, y }: Point) {
+export function СustomCursor({
+  x,
+  y,
+  isOthers = false,
+}: {
+  x: number;
+  y: number;
+  isOthers?: boolean;
+}) {
   return (
     <div
       style={{
@@ -14,7 +22,8 @@ export function СustomCursor({ x, y }: Point) {
         padding: 0,
         borderRadius: "50%",
         pointerEvents: "none",
-        background: "red",
+        background: isOthers ? "red" : "blue",
+        transition: isOthers ? "all 0.5s ease" : "none",
       }}
     ></div>
   );
