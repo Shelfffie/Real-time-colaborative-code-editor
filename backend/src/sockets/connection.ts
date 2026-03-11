@@ -18,5 +18,14 @@ export const socketConn = (io: Server) => {
       const room: string = socket.data.room;
       socket.to(room).emit("mouse-cords", { userId: socket.id, pos });
     });
+
+    socket.on("editor-change", (value: string) => {
+      const room: string = socket.data.room;
+      socket.to(room).emit("new-code", { userId: socket.id, value });
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Користувач відключився:", socket.id);
+    });
   });
 };

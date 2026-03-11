@@ -1,5 +1,5 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Connection from "./components/socket_conn";
+import Connection from "./components/editor-pg";
 
 function App() {
   return (
