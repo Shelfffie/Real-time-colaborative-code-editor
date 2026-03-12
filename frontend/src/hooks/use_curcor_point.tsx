@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import type { Socket } from "socket.io-client";
 import type { Point } from "../types/interfaces";
 import { useMouseMove } from "../socket/mouseMove";
 import { useThrottle } from "../hooks/throttle";
 
-export function useCursor() {
+export function useCursor(socket: Socket | null) {
   const [mousePos, setMousePos] = useState<Point>({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const throttlePos = useThrottle({
     value: mousePos,
     interval: 10,
   });
-  const mouseMoveEv = useMouseMove();
+  const mouseMoveEv = useMouseMove(socket);
 
   useEffect(() => {
-    if (throttlePos !== null) {
+    if (throttlePos && mouseMoveEv) {
       mouseMoveEv({ pos: throttlePos });
     }
   }, [throttlePos]);

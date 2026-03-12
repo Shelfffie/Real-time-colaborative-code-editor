@@ -1,20 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { Socket } from "socket.io-client";
 import axios from "axios";
-import { socket } from "../socket/connection";
 import type { SessionType } from "../types/interfaces";
 
-export function useCode(id: string) {
+export function useCode(id: string, socket: Socket | null) {
   const [sessionInfo, setSessionInfo] = useState<SessionType>();
+
+  useEffect(() => {
+    if (!id || !socket) return;
+    console.log("id:", id);
+
+    const connectHandler = () => {
+      console.log("You connected to server with id:", socket.id);
+      socket.emit("join-room", id);
+    };
+
+    socket.on("connect", connectHandler);
+
+    console.log("connected?:", socket.connected);
+
+    if (socket.connected) {
+      connectHandler();
+      console.log("room:", id);
+    }
+
+    return () => {
+      socket.off("connect", connectHandler);
+      socket.disconnect();
+      console.log("disconnected connect!");
+    };
+  }, [id, socket]);
+
   const getRequest = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/sessions/${id}`);
       if (response.status === 200) {
         console.log("Successful!", response.data.data);
         setSessionInfo(response.data.data);
-        socket.on("connect", () => {
-          console.log("You connected to server with id:", socket.id);
-          socket.emit("join-room", id);
-        });
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

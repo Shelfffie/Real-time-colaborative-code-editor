@@ -1,23 +1,58 @@
-import { socket } from "../socket/connection";
-import { useEffect } from "react";
+import { useSocket } from "../socket/connection";
+import { useEffect, useRef } from "react";
 import { СustomCursor } from "./custom_cursor";
 import { useCursor } from "../hooks/use_curcor_point";
 import { useOtherCursors } from "../hooks/other_cursors";
 import { useParams, type Params } from "react-router-dom";
 import { CodeRedacrtor } from "./code_redactor";
 import { useCode } from "../hooks/use_code";
+import type { EditorView } from "@codemirror/view";
+import type { NewCode } from "../types/interfaces";
 
 export default function Connection() {
-  const { mousePos, handleMouse, isVisible, handleMouseLeave } = useCursor();
-  const cursors = useOtherCursors();
+  const { socket, isConnected } = useSocket("http://localhost:3000");
+  const { mousePos, handleMouse, isVisible, handleMouseLeave } =
+    useCursor(socket);
+  const editorViewRef = useRef<EditorView | null>(null);
+  const cursors = useOtherCursors(socket);
   const { id }: Readonly<Params<string>> = useParams();
 
   if (!id) return null;
-  const { setSessionInfo, sessionInfo, getRequest } = useCode(id);
+  const { sessionInfo, getRequest } = useCode(id, socket);
 
   useEffect(() => {
     getRequest();
-  }, []);
+    console.log("Connection mounted");
+  }, [id]);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handler = (newCode: NewCode) => {
+      console.log("socket connected:", isConnected);
+      console.log("socket event", newCode);
+      console.log("editorRef", editorViewRef.current);
+      const view = editorViewRef.current;
+      if (!view) return;
+
+      const current = view.state.doc.toString();
+      if (current === newCode.value) return;
+
+      view.dispatch({
+        changes: {
+          from: 0,
+          to: view.state.doc.length,
+          insert: newCode.value,
+        },
+      });
+    };
+
+    socket.on("new-code", handler);
+
+    return () => {
+      socket.off("new-code", handler);
+      console.log("disconnected new-code!");
+    };
+  }, [socket]);
 
   return (
     <>
@@ -33,7 +68,8 @@ export default function Connection() {
         <h1>Hello!</h1>
         <CodeRedacrtor
           content={sessionInfo?.content}
-          setSessionInfo={setSessionInfo}
+          editorViewRef={editorViewRef}
+          socket={socket}
         />
       </div>
     </>

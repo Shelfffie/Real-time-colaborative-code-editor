@@ -6,7 +6,7 @@ export const socketConn = (io: Server) => {
     console.log("Сокет підключений!", socket.id);
 
     socket.on("join-room", (room: string) => {
-      console.log("You hoin the room:", room);
+      console.log("You join the room:", room);
       socket.join(room);
       socket.data.room = room;
 
@@ -21,10 +21,13 @@ export const socketConn = (io: Server) => {
 
     socket.on("editor-change", (value: string) => {
       const room: string = socket.data.room;
-      socket.to(room).emit("new-code", { userId: socket.id, value });
+      console.log(value);
+      io.to(room).emit("new-code", { userId: socket.id, value });
     });
 
     socket.on("disconnect", () => {
+      const room: string = socket.data.room;
+      socket.leave(room);
       console.log("Користувач відключився:", socket.id);
     });
   });
