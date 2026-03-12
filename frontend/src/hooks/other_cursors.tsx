@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import type { Socket } from "socket.io-client";
+import { useSocket } from "../socket/socketContext";
 import type { Point } from "../types/interfaces";
 
-export function useOtherCursors(socket: Socket | null) {
+export function useOtherCursors() {
   const [cursors, setCursors] = useState<Record<string, Point>>({});
+  const socket = useSocket();
 
   useEffect(() => {
     if (!socket) return;

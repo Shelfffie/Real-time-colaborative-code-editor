@@ -1,7 +1,8 @@
-import type { Socket } from "socket.io-client";
+import { useSocket } from "./socketContext";
 import type { Point } from "../types/interfaces";
 
-export function useMouseMove(socket: Socket | null) {
+export function useMouseMove() {
+  const socket = useSocket();
   if (!socket) return;
   const mouseMoveEv = ({ pos }: { pos: Point }) => {
     socket.emit("mouse-move", pos);

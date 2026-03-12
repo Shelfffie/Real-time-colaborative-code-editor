@@ -1,5 +1,3 @@
-import type { Point } from "../types/interfaces";
-
 export function СustomCursor({
   x,
   y,

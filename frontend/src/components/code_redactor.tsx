@@ -4,12 +4,10 @@ import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
 import styles from "../styles/editor.module.css";
 import type { CodeRedacorProps } from "../types/interfaces";
+import { useSocket } from "../socket/socketContext";
 
-export function CodeRedacrtor({
-  content,
-  editorViewRef,
-  socket,
-}: CodeRedacorProps) {
+export function CodeRedacrtor({ content, editorViewRef }: CodeRedacorProps) {
+  const socket = useSocket();
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import type { Socket } from "socket.io-client";
+import { useSocket } from "../socket/socketContext";
 import axios from "axios";
 import type { SessionType } from "../types/interfaces";
 
-export function useCode(id: string, socket: Socket | null) {
+export function useCode(id: string) {
   const [sessionInfo, setSessionInfo] = useState<SessionType>();
+  const socket = useSocket();
 
   useEffect(() => {
     if (!id || !socket) return;

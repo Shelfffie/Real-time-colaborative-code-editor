@@ -1,4 +1,4 @@
-import { useSocket } from "../socket/connection";
+import { useSocket } from "../socket/socketContext";
 import { useEffect, useRef } from "react";
 import { СustomCursor } from "./custom_cursor";
 import { useCursor } from "../hooks/use_curcor_point";
@@ -10,15 +10,14 @@ import type { EditorView } from "@codemirror/view";
 import type { NewCode } from "../types/interfaces";
 
 export default function Connection() {
-  const { socket, isConnected } = useSocket("http://localhost:3000");
-  const { mousePos, handleMouse, isVisible, handleMouseLeave } =
-    useCursor(socket);
+  const socket = useSocket();
+  const { mousePos, handleMouse, isVisible, handleMouseLeave } = useCursor();
   const editorViewRef = useRef<EditorView | null>(null);
-  const cursors = useOtherCursors(socket);
+  const cursors = useOtherCursors();
   const { id }: Readonly<Params<string>> = useParams();
 
   if (!id) return null;
-  const { sessionInfo, getRequest } = useCode(id, socket);
+  const { sessionInfo, getRequest } = useCode(id);
 
   useEffect(() => {
     getRequest();
@@ -28,7 +27,7 @@ export default function Connection() {
   useEffect(() => {
     if (!socket) return;
     const handler = (newCode: NewCode) => {
-      console.log("socket connected:", isConnected);
+      console.log("socket connected:", socket.connected);
       console.log("socket event", newCode);
       console.log("editorRef", editorViewRef.current);
       const view = editorViewRef.current;
@@ -69,7 +68,6 @@ export default function Connection() {
         <CodeRedacrtor
           content={sessionInfo?.content}
           editorViewRef={editorViewRef}
-          socket={socket}
         />
       </div>
     </>

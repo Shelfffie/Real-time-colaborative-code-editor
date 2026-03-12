@@ -1,5 +1,4 @@
 import type { EditorView } from "@codemirror/view";
-import type { Socket } from "socket.io-client";
 
 export interface Point {
   x: number;
@@ -17,7 +16,6 @@ export interface SessionType {
 export interface CodeRedacorProps {
   content: string | null | undefined;
   editorViewRef: React.RefObject<EditorView | null>;
-  socket: Socket | null;
 }
 
 export interface NewCode {
