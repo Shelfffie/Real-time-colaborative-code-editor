@@ -36,8 +36,13 @@ export function useCode(id: string) {
     try {
       const response = await axios.get(`http://localhost:3000/sessions/${id}`);
       if (response.status === 200) {
-        console.log("Successful!", response.data.data);
-        setSessionInfo(response.data.data);
+        socket.emit("check-room", id, (exist: boolean, data: string) => {
+          const sessionData: SessionType = { ...response.data.data };
+          if (exist) {
+            sessionData.content = data;
+          }
+          setSessionInfo(sessionData);
+        });
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
