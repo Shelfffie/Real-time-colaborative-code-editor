@@ -2,16 +2,18 @@ import express from "express";
 import {
   createCodeSession,
   getCodeSession,
+  saveChanges,
 } from "../controllers/code_controller";
+import { getVersion } from "../controllers/version_control";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "Sessions endpoint" });
-});
-
 router.post("/", createCodeSession);
 
+router.post("/:id", saveChanges);
+
 router.get("/:id", getCodeSession);
+
+router.get("/:id/version/:version", getVersion);
 
 export default router;

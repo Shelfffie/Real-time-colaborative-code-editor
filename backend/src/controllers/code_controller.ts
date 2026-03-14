@@ -20,9 +20,11 @@ const createCodeSession = async (
     const insertQuery =
       "INSERT INTO sessions (title, content) VALUES ($1, $2) RETURNING *";
     const result = await db.query(insertQuery, [title, content]);
+    console.log("create new row. Go to copy creating...");
+
     const sessionInfo = result.rows[0];
     const copyQuery =
-      "INSERT INTO changes_history (session_id, title, content, version) VALUES($1, $2, $3)";
+      "INSERT INTO changes_history (session_id, title, content, version) VALUES($1, $2, $3, $4)";
     await db.query(copyQuery, [sessionInfo.id, title, content, 1]);
     return responseHandler(res, 200, true, sessionInfo);
   } catch (error: unknown) {
