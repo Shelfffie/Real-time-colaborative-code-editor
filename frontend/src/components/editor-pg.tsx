@@ -74,7 +74,11 @@ export default function Connection() {
           version={version}
         />
         <GetNewVersion id={id} setVersion={setVersion} />
-        <SaveChangesSession content={sessionInfo?.content ?? ""} id={id} />
+        <SaveChangesSession
+          originalContent={editorViewRef?.current?.state.doc.toString() ?? ""}
+          content={sessionInfo?.content ?? ""}
+          id={id}
+        />
       </div>
     </>
   );
