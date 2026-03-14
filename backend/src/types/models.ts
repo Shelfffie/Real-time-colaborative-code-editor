@@ -1,12 +1,20 @@
 export interface SessionType {
   id?: number;
-  session_id?: string;
   title: string;
   content: string | null;
   created_at?: Date;
-  updated_ar?: Date;
+  updated_at?: Date;
+}
+
+export interface VersionType {
+  id: number;
+  session_id: string;
+  title: string;
+  content: string | null;
+  created_at: Date;
+
   changed_by?: string | null;
-  version?: string;
+  version: string;
 }
 
 export interface ApiResponse<T> {

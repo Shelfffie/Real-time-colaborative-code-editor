@@ -26,4 +26,26 @@ const getVersion = async (
   }
 };
 
-export { getVersion };
+const getSessionHistory = async (
+  req: Request<{ id: string }>,
+  res: Response<ApiResponse<SessionType[]>>
+) => {
+  const id = parseInt(req.params.id);
+  console.log("Id:", id, "\n params id:", req.params.id);
+
+  if (isNaN(id) || id <= 0) {
+    return responseHandler(res, 401, false, "Invalid id.");
+  }
+  try {
+    const fetchQuery = "Select * from changes_history WHERE session_id=$1";
+    const data = await db.query(fetchQuery, [id]);
+    if (data.rows.length === 0) {
+      return responseHandler(res, 404, false, "Version of session not found.");
+    }
+    return responseHandler(res, 200, true, data.rows);
+  } catch (error) {
+    errorCatchHandler(error, res);
+  }
+};
+
+export { getVersion, getSessionHistory };

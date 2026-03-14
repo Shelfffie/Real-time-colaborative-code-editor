@@ -1,5 +1,5 @@
 import { useSocket } from "../socket/socketContext";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { СustomCursor } from "./custom_cursor";
 import { useCursor } from "../hooks/use_curcor_point";
 import { useOtherCursors } from "../hooks/other_cursors";
@@ -7,7 +7,9 @@ import { useParams, type Params } from "react-router-dom";
 import { CodeRedacrtor } from "./code_redactor";
 import { useCode } from "../hooks/use_code";
 import type { EditorView } from "@codemirror/view";
-import type { NewCode } from "../types/interfaces";
+import type { NewCode, VersionType } from "../types/interfaces";
+import { GetNewVersion } from "./getNewVersion";
+import { SaveChangesSession } from "./saveChanges";
 
 export default function Connection() {
   const socket = useSocket();
@@ -15,6 +17,7 @@ export default function Connection() {
   const editorViewRef = useRef<EditorView | null>(null);
   const cursors = useOtherCursors();
   const { id }: Readonly<Params<string>> = useParams();
+  const [version, setVersion] = useState<VersionType | null>(null);
 
   if (!id) return null;
   const { sessionInfo, getRequest } = useCode(id);
@@ -68,7 +71,10 @@ export default function Connection() {
         <CodeRedacrtor
           content={sessionInfo?.content}
           editorViewRef={editorViewRef}
+          version={version}
         />
+        <GetNewVersion id={id} setVersion={setVersion} />
+        <SaveChangesSession content={sessionInfo?.content ?? ""} id={id} />
       </div>
     </>
   );

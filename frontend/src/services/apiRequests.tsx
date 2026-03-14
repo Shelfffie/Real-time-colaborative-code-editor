@@ -1,6 +1,5 @@
 import axios from "axios";
-import type { SessionType } from "../types/interfaces";
-import type { Dispatch, SetStateAction } from "react";
+import type { SessionType, VersionType } from "../types/interfaces";
 
 export function APIRequests() {
   const createNewSession = async (data: SessionType) => {
@@ -21,11 +20,15 @@ export function APIRequests() {
     }
   };
 
-  const saveChanges = async (id: string, data: SessionType) => {
+  const saveChanges = async (
+    id: string,
+    content: string,
+    description: string
+  ) => {
     try {
       const response = await axios.post(
         `http://localhost:3000/sessions/${id}`,
-        data
+        { content, description }
       );
       if (response.status === 200) {
         console.log("Changes are saved!");
@@ -45,15 +48,17 @@ export function APIRequests() {
   const getVersion = async (
     id: string,
     version: string,
-    setNewData: Dispatch<SetStateAction<string>>
+    setData: React.Dispatch<React.SetStateAction<VersionType | null>>,
+    setIsReturned: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     try {
       const response = await axios.get(
         `http://localhost:3000/sessions/${id}/version/${version}`
       );
       if (response.status === 200) {
-        console.log("Version is getting!");
-        setNewData(response.data.data);
+        console.log("Version is got!:", response.data.data);
+        setData(response.data.data);
+        setIsReturned(true);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -67,5 +72,29 @@ export function APIRequests() {
     }
   };
 
-  return { createNewSession, saveChanges, getVersion };
+  const getVerionHistory = async (
+    id: string,
+    setData: React.Dispatch<React.SetStateAction<VersionType[] | null>>
+  ) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/sessions/${id}/version`
+      );
+      if (response.status === 200) {
+        console.log("Versions are got!");
+        setData(response.data.data);
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.log(
+          "Server error:",
+          error.response ? error.response.data : error.message
+        );
+      } else {
+        console.log("Unknown error:", error);
+      }
+    }
+  };
+
+  return { createNewSession, saveChanges, getVersion, getVerionHistory };
 }

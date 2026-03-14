@@ -6,7 +6,11 @@ import styles from "../styles/editor.module.css";
 import type { CodeRedacorProps } from "../types/interfaces";
 import { useSocket } from "../socket/socketContext";
 
-export function CodeRedacrtor({ content, editorViewRef }: CodeRedacorProps) {
+export function CodeRedacrtor({
+  content,
+  editorViewRef,
+  version,
+}: CodeRedacorProps) {
   const socket = useSocket();
   const editorRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,7 +48,7 @@ export function CodeRedacrtor({ content, editorViewRef }: CodeRedacorProps) {
     if (!editorViewRef.current) return;
 
     const current = editorViewRef.current.state.doc.toString();
-    const next = content ?? "";
+    const next = version?.content ?? content ?? "";
 
     if (current === next) return;
 
@@ -52,10 +56,10 @@ export function CodeRedacrtor({ content, editorViewRef }: CodeRedacorProps) {
       changes: {
         from: 0,
         to: editorViewRef.current.state.doc.length,
-        insert: content ?? "",
+        insert: next,
       },
     });
-  }, [content]);
+  }, [content, version]);
 
   return <div ref={editorRef} className={styles["editor-container"]} />;
 }
