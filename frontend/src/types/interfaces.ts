@@ -34,3 +34,8 @@ export interface NewCode {
   userId: string;
   value: string;
 }
+
+export interface RoomStatus {
+  inRoom: boolean | null;
+  isPassword: boolean;
+}

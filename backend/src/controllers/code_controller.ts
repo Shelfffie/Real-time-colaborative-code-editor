@@ -18,7 +18,7 @@ const createCodeSession = async (
       );
     }
     const insertQuery =
-      "INSERT INTO sessions (title, content) VALUES ($1, $2) RETURNING *";
+      "INSERT INTO sessions (title, content) VALUES ($1, $2) RETURNING id, title, content";
     const result = await db.query(insertQuery, [title, content]);
     console.log("create new row. Go to copy creating...");
 
@@ -48,7 +48,8 @@ const getCodeSession = async (
       return responseHandler(res, 401, false, "Invalid id.");
     }
 
-    const insertQuery = "Select * from sessions where id=$1";
+    const insertQuery =
+      "SELECT id, title, content, created_at, updated_at from sessions where id=$1";
     const data = await db.query(insertQuery, [id]);
 
     if (data.rows.length === 0) {
@@ -92,4 +93,69 @@ const saveChanges = async (
   }
 };
 
-export { createCodeSession, getCodeSession, saveChanges };
+const handleConnection = async (
+  req: Request<{ id: string }>,
+  res: Response<ApiResponse<boolean>>
+) => {
+  const id = parseInt(req.params.id);
+
+  if (isNaN(id) || id <= 0) {
+    return responseHandler(res, 401, false, "Invalid id.");
+  }
+
+  try {
+    const requestQeury = "SELECT password FROM sessions WHERE id=$1";
+
+    const data = await db.query(requestQeury, [id]);
+    let isPassword: boolean = true;
+
+    if (data.rows.length === 0) {
+      return responseHandler(res, 404, false, "Session not found.");
+    }
+
+    console.log(data.rows[0]);
+
+    if (data.rows[0].password === null) {
+      isPassword = false;
+    }
+
+    return responseHandler(res, 200, true, isPassword);
+  } catch (error) {
+    errorCatchHandler(error, res);
+  }
+};
+
+const handleCheking = async (
+  req: Request<{ id: string }>,
+  res: Response<ApiResponse<boolean>>
+) => {
+  const id = parseInt(req.params.id);
+  const { password } = req.body;
+
+  if (isNaN(id) || id <= 0) {
+    return responseHandler(res, 401, false, "Invalid id.");
+  }
+
+  try {
+    const requestQeury = "SELECT password FROM sessions WHERE id=$1";
+
+    const data = await db.query(requestQeury, [id]);
+    let isEqual: boolean = false;
+
+    if (password !== data.rows[0].password) {
+      return responseHandler(res, 401, false, "Invalid password!");
+    }
+
+    return responseHandler(res, 200, true, isEqual);
+  } catch (error) {
+    errorCatchHandler(error, res);
+  }
+};
+
+export {
+  createCodeSession,
+  getCodeSession,
+  saveChanges,
+  handleConnection,
+  handleCheking,
+};

@@ -11,12 +11,11 @@ import type { NewCode, VersionType } from "../types/interfaces";
 import { GetNewVersion } from "./getNewVersion";
 import { SaveChangesSession } from "./saveChanges";
 
-export default function Connection() {
+export default function Connection({ id }: { id: string }) {
   const socket = useSocket();
   const { mousePos, handleMouse, isVisible, handleMouseLeave } = useCursor();
   const editorViewRef = useRef<EditorView | null>(null);
   const cursors = useOtherCursors();
-  const { id }: Readonly<Params<string>> = useParams();
   const [version, setVersion] = useState<VersionType | null>(null);
 
   if (!id) return null;
@@ -75,8 +74,8 @@ export default function Connection() {
         />
         <GetNewVersion id={id} setVersion={setVersion} />
         <SaveChangesSession
-          originalContent={editorViewRef?.current?.state.doc.toString() ?? ""}
-          content={sessionInfo?.content ?? ""}
+          content={editorViewRef?.current?.state.doc.toString() ?? ""}
+          originalContent={sessionInfo?.content ?? ""}
           id={id}
         />
       </div>

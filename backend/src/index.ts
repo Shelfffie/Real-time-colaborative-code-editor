@@ -15,7 +15,6 @@ import { Server } from "socket.io";
 import { connectDb } from "./database/connection";
 import { socketConn } from "./sockets/connection";
 import sessionsRouter from "./routes/sessions";
-import changesRouter from "./routes/changes";
 
 const app = express();
 const httpServer = createServer(app);
@@ -42,7 +41,6 @@ socketConn(io);
 const PORT: number = parseInt(process.env.PORT ?? "3000");
 
 app.use("/sessions", sessionsRouter);
-app.use("/changes", changesRouter);
 
 connectDb();
 
