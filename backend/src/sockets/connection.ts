@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import type { Point } from "../types/models";
+import { getRandomColour } from "../utils/random_colour";
 
 const roomMemory = new Map<string, string>();
 

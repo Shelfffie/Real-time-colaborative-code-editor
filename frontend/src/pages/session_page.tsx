@@ -21,7 +21,12 @@ export function SessionPage() {
           `http://localhost:3000/sessions/${id}/status`
         );
         if (response.status === 200) {
-          setRoomStatus((prev) => ({ ...prev, isPassword: response.data }));
+          console.log(response.data.data);
+
+          setRoomStatus((prev) => ({
+            ...prev,
+            isPassword: response.data.data,
+          }));
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -39,6 +44,7 @@ export function SessionPage() {
       if (data.inRoom) {
         setRoomStatus((prev) => ({ ...prev, inRoom: true }));
       } else {
+        setRoomStatus((prev) => ({ ...prev, inRoom: false }));
         checkRoomv();
       }
     });

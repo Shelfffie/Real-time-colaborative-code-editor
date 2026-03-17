@@ -140,13 +140,13 @@ const handleCheking = async (
     const requestQeury = "SELECT password FROM sessions WHERE id=$1";
 
     const data = await db.query(requestQeury, [id]);
-    let isEqual: boolean = false;
 
-    if (password !== data.rows[0].password) {
+    const dbPassword = data.rows[0].password ?? "";
+    if (password !== dbPassword) {
       return responseHandler(res, 401, false, "Invalid password!");
     }
 
-    return responseHandler(res, 200, true, isEqual);
+    return responseHandler(res, 200, true, true);
   } catch (error) {
     errorCatchHandler(error, res);
   }

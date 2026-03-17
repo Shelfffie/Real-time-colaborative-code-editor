@@ -27,20 +27,42 @@ export function RoomJoinForm({
   const hadnleSend = async () => {
     if (name.trim() === "" || (isPassword && password.trim() === "")) {
       setError("The fields can't be empty.");
+      return;
     }
     try {
-      const response = axios.post("", password);
-    } catch (error) {
-      setError("denied");
+      const response = await axios.post(
+        `http://localhost:3000/sessions/${id}/checking`,
+        { password }
+      );
+      if (response.status === 200 && response.data.data === true) {
+        setRoomStatus((prev) => ({ ...prev, inRoom: true }));
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.log(
+          "Server error:",
+          error.response ? error.response.data : error.message
+        );
+        setError(error.response ? error.response.data.data : error.message);
+      } else {
+        console.log("Unknown error:", error);
+        setError("Unknown error");
+      }
     }
   };
 
   return (
     <div>
-      <input type="text" value={name} />
-      {isPassword && <input type="text" value={password} />}
-      <p>{error}0</p>
-      <button>Submit</button>
+      <input type="text" value={name} onChange={(e) => handleNameChange(e)} />
+      {isPassword && (
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => handlePasswordChange(e)}
+        />
+      )}
+      <p>{error}</p>
+      <button onClick={() => hadnleSend()}>Submit</button>
     </div>
   );
 }
