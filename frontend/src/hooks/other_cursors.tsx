@@ -9,9 +9,8 @@ export function useOtherCursors() {
   useEffect(() => {
     if (!socket) return;
     const handler = (data: any) => {
-      console.log(data);
-
       setCursors((prev) => ({
+        ...prev,
         [data.userId]: {
           ...prev[data.userId],
           x: data.pos.x,
@@ -20,23 +19,50 @@ export function useOtherCursors() {
       }));
     };
 
-    const setColour = (data: any) => {
-      console.log("colour:", data.colour);
-
+    const setColourName = (data: any) => {
       setCursors((prev) => ({
+        ...prev,
         [data.userId]: {
           ...prev[data.userId],
           colour: data.colour,
+          name: data.name,
         },
       }));
     };
 
-    socket.on("mouse-cords", handler);
+    const leaveRoom = (data: any) => {
+      setCursors((prev) => {
+        const { [data.userId]: _, ...rest } = prev;
+        return rest;
+      });
+    };
 
-    socket.on("user-colour", setColour);
+    const initUsers = (users: any[]) => {
+      const mapped: Record<string, Point> = {};
+
+      for (const user of users) {
+        console.log("users and their cursors:", user);
+        mapped[user.userId] = {
+          x: 0,
+          y: 0,
+          name: user.name,
+          colour: user.colour,
+        };
+      }
+
+      setCursors(mapped);
+    };
+
+    socket.on("mouse-cords", handler);
+    socket.on("user-colour", setColourName);
+    socket.on("new-user", initUsers);
+    socket.on("leave-room", leaveRoom);
 
     return () => {
       socket.off("mouse-cords", handler);
+      socket.off("user-colour", setColourName);
+      socket.off("new-user", initUsers);
+      socket.off("leave-room", leaveRoom);
     };
   }, [socket]);
 

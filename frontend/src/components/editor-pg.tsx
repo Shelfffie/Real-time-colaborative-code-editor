@@ -9,8 +9,9 @@ import type { EditorView } from "@codemirror/view";
 import type { NewCode, VersionType } from "../types/interfaces";
 import { GetNewVersion } from "./getNewVersion";
 import { SaveChangesSession } from "./saveChanges";
+import { UserInfo } from "./users_in_room_info";
 
-export default function Connection({ id }: { id: string }) {
+export default function Connection({ id, name }: { id: string; name: string }) {
   const socket = useSocket();
   const { mousePos, handleMouse, isVisible, handleMouseLeave } = useCursor();
   const editorViewRef = useRef<EditorView | null>(null);
@@ -18,7 +19,7 @@ export default function Connection({ id }: { id: string }) {
   const [version, setVersion] = useState<VersionType | null>(null);
 
   if (!id) return null;
-  const { sessionInfo, getRequest } = useCode(id);
+  const { sessionInfo, getRequest } = useCode(id, name);
 
   useEffect(() => {
     getRequest();
@@ -82,6 +83,7 @@ export default function Connection({ id }: { id: string }) {
           originalContent={sessionInfo?.content ?? ""}
           id={id}
         />
+        <UserInfo cursors={cursors} />
       </div>
     </>
   );

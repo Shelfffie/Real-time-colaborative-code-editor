@@ -3,18 +3,17 @@ import { useSocket } from "../socket/socketContext";
 import axios from "axios";
 import type { SessionType } from "../types/interfaces";
 
-export function useCode(id: string) {
+export function useCode(id: string, name: string) {
   const [sessionInfo, setSessionInfo] = useState<SessionType>();
-  const [curcorColour, setCursorColour] = useState<string>("");
   const socket = useSocket();
 
   useEffect(() => {
     if (!id || !socket) return;
-    console.log("id:", id);
+    console.log("id:", id, ", name:", name);
 
     const connectHandler = () => {
       console.log("You connected to server with id:", socket.id);
-      socket.emit("join-room", id);
+      socket.emit("join-room", id, name);
     };
 
     socket.on("connect", connectHandler);

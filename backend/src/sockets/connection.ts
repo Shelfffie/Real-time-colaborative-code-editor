@@ -8,15 +8,36 @@ export const socketConn = (io: Server) => {
   io.on("connection", (socket) => {
     console.log("Сокет підключений!", socket.id);
 
-    socket.on("join-room", (room: string) => {
+    socket.on("join-room", (room: string, name: string) => {
       console.log("You join the room:", room);
       socket.join(room);
-      socket.data.room = room;
       const colour = getRandomColour();
+      socket.data.room = room;
+      socket.data.name = name;
+      socket.data.colour = colour;
 
       console.log("Joined room:", room);
       console.log("Rooms:", socket.rooms);
-      socket.to(room).emit("user-colour", { userId: socket.id, colour });
+
+      const roomClients = io.sockets.adapter.rooms.get(room);
+      const users: any[] = [];
+
+      if (roomClients) {
+        for (const clientId of roomClients) {
+          const s = io.sockets.sockets.get(clientId);
+          if (!s || s.id === socket.id) continue;
+
+          users.push({
+            userId: s.id,
+            name: s.data.name,
+            colour: s.data.colour,
+          });
+        }
+      }
+
+      socket.emit("new-user", users);
+
+      socket.to(room).emit("user-colour", { userId: socket.id, name, colour });
     });
 
     socket.on("mouse-move", (pos: Point) => {
@@ -51,6 +72,7 @@ export const socketConn = (io: Server) => {
         console.log("Останній користувач покидає кімнату.");
         roomMemory.delete(room);
       }
+      io.to(room).emit("leave-room", { userId: socket.id });
       socket.leave(room);
       console.log("Користувач відключився:", socket.id);
     });

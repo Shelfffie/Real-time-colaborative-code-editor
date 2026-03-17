@@ -4,6 +4,7 @@ export interface Point {
   x: number;
   y: number;
   colour: string;
+  name: string;
 }
 
 export interface SessionType {

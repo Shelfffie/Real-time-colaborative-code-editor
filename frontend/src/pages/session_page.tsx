@@ -8,6 +8,7 @@ import { socket } from "../socket/connection";
 
 export function SessionPage() {
   const { id } = useParams<{ id: string }>();
+  const [name, setName] = useState<string>("");
   const [roomStatus, setRoomStatus] = useState<RoomStatus>({
     inRoom: null,
     isPassword: false,
@@ -54,12 +55,14 @@ export function SessionPage() {
 
   if (!id) return null;
   return roomStatus.inRoom ? (
-    <Connection id={id} />
+    <Connection id={id} name={name} />
   ) : (
     <RoomJoinForm
       id={id}
       isPassword={roomStatus.isPassword}
       setRoomStatus={setRoomStatus}
+      name={name}
+      setName={setName}
     />
   );
 }

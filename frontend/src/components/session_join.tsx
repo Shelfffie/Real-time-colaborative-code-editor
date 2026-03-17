@@ -1,17 +1,20 @@
 import axios from "axios";
-import React, { useState, type SetStateAction } from "react";
+import React, { useState } from "react";
 import type { RoomStatus } from "../types/interfaces";
 
 export function RoomJoinForm({
   id,
   isPassword,
   setRoomStatus,
+  name,
+  setName,
 }: {
   id: string;
   isPassword: boolean;
   setRoomStatus: React.Dispatch<React.SetStateAction<RoomStatus>>;
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
