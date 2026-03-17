@@ -12,9 +12,11 @@ export const socketConn = (io: Server) => {
       console.log("You join the room:", room);
       socket.join(room);
       socket.data.room = room;
+      const colour = getRandomColour();
 
       console.log("Joined room:", room);
       console.log("Rooms:", socket.rooms);
+      socket.to(room).emit("user-colour", { userId: socket.id, colour });
     });
 
     socket.on("mouse-move", (pos: Point) => {

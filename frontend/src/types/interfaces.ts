@@ -3,6 +3,7 @@ import type { EditorView } from "@codemirror/view";
 export interface Point {
   x: number;
   y: number;
+  colour: string;
 }
 
 export interface SessionType {

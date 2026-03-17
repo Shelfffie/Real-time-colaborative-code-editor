@@ -12,12 +12,28 @@ export function useOtherCursors() {
       console.log(data);
 
       setCursors((prev) => ({
-        ...prev,
-        [data.userId]: { x: data.pos.x, y: data.pos.y },
+        [data.userId]: {
+          ...prev[data.userId],
+          x: data.pos.x,
+          y: data.pos.y,
+        },
+      }));
+    };
+
+    const setColour = (data: any) => {
+      console.log("colour:", data.colour);
+
+      setCursors((prev) => ({
+        [data.userId]: {
+          ...prev[data.userId],
+          colour: data.colour,
+        },
       }));
     };
 
     socket.on("mouse-cords", handler);
+
+    socket.on("user-colour", setColour);
 
     return () => {
       socket.off("mouse-cords", handler);

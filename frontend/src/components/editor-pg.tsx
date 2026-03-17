@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { СustomCursor } from "./custom_cursor";
 import { useCursor } from "../hooks/use_curcor_point";
 import { useOtherCursors } from "../hooks/other_cursors";
-import { useParams, type Params } from "react-router-dom";
 import { CodeRedacrtor } from "./code_redactor";
 import { useCode } from "../hooks/use_code";
 import type { EditorView } from "@codemirror/view";
@@ -59,14 +58,19 @@ export default function Connection({ id }: { id: string }) {
     <>
       {isVisible && <СustomCursor x={mousePos.x} y={mousePos.y} />}
       {Object.entries(cursors).map(([userId, pos]) => (
-        <СustomCursor key={userId} x={pos.x} y={pos.y} isOthers={true} />
+        <СustomCursor
+          key={userId}
+          x={pos.x}
+          y={pos.y}
+          isOthers={true}
+          colour={pos.colour}
+        />
       ))}
       <div
         style={{ height: "100vh", width: "100vw", cursor: "none" }}
         onMouseMove={handleMouse}
         onMouseLeave={handleMouseLeave}
       >
-        <h1>Hello!</h1>
         <CodeRedacrtor
           content={sessionInfo?.content}
           editorViewRef={editorViewRef}

@@ -2,10 +2,12 @@ export function СustomCursor({
   x,
   y,
   isOthers = false,
+  colour,
 }: {
   x: number;
   y: number;
   isOthers?: boolean;
+  colour?: string;
 }) {
   return (
     <div
@@ -20,7 +22,7 @@ export function СustomCursor({
         padding: 0,
         borderRadius: "50%",
         pointerEvents: "none",
-        background: isOthers ? "red" : "blue",
+        background: colour ? colour : "red",
         transition: isOthers ? "all 0.5s ease" : "none",
       }}
     ></div>

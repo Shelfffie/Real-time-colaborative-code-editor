@@ -5,6 +5,7 @@ import type { SessionType } from "../types/interfaces";
 
 export function useCode(id: string) {
   const [sessionInfo, setSessionInfo] = useState<SessionType>();
+  const [curcorColour, setCursorColour] = useState<string>("");
   const socket = useSocket();
 
   useEffect(() => {
