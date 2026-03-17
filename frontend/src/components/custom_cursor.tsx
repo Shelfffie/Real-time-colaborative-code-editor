@@ -10,21 +10,26 @@ export function СustomCursor({
   colour?: string;
 }) {
   return (
-    <div
-      style={{
-        position: "fixed",
-        left: x,
-        top: y,
-        width: "3rem",
-        height: "3rem",
-        border: "2px solid black",
-        margin: 0,
-        padding: 0,
-        borderRadius: "50%",
-        pointerEvents: "none",
-        background: colour ? colour : "red",
-        transition: isOthers ? "all 0.5s ease" : "none",
-      }}
-    ></div>
+    <>
+      <svg
+        style={{
+          position: "fixed",
+          left: x,
+          top: y,
+          pointerEvents: "none",
+          transition: isOthers ? "all 0.5s ease" : "none",
+        }}
+        width="124"
+        height="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M2 2 L22 12 L13 14 L11 22 Z"
+          fill={colour ? colour : "red"}
+          stroke="black"
+          strokeWidth="2"
+        />
+      </svg>
+    </>
   );
 }
