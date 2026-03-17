@@ -76,7 +76,7 @@ export default function Connection({ id, name }: { id: string; name: string }) {
           content={sessionInfo?.content}
           editorViewRef={editorViewRef}
           version={version}
-        />
+        ></CodeRedacrtor>
         <GetNewVersion id={id} setVersion={setVersion} />
         <SaveChangesSession
           content={editorViewRef?.current?.state.doc.toString() ?? ""}
