@@ -1,7 +1,6 @@
 import axios from "axios";
 import type { SessionType, VersionType } from "../types/interfaces";
 import type React from "react";
-import { socket } from "../socket/connection";
 
 export function APIRequests() {
   const createNewSession = async (data: SessionType) => {

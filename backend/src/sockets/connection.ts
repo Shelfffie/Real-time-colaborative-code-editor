@@ -9,37 +9,51 @@ export const socketConn = (io: Server) => {
   io.on("connection", (socket) => {
     console.log("Сокет підключений!", socket.id);
 
-    socket.on("join-room", (room: string, name: string) => {
-      console.log("You join the room:", room);
-      socket.join(room);
-      const colour = getRandomColour();
-      socket.data.room = room;
-      socket.data.name = name;
-      socket.data.colour = colour;
+    socket.on(
+      "join-room",
+      (
+        data: { id: string; name: string },
+        callback: (result: string, success: boolean) => void
+      ) => {
+        try {
+          console.log("You join the room:", data.id);
+          socket.join(data.id);
+          const colour = getRandomColour();
+          socket.data.room = data.id;
+          socket.data.name = data.name;
+          socket.data.colour = colour;
 
-      console.log("Joined room:", room);
-      console.log("Rooms:", socket.rooms);
+          console.log("Joined room:", data.id);
+          console.log("Rooms:", socket.rooms);
 
-      const roomClients = io.sockets.adapter.rooms.get(room);
-      const users: any[] = [];
+          const roomClients = io.sockets.adapter.rooms.get(data.id);
+          const users: any[] = [];
 
-      if (roomClients) {
-        for (const clientId of roomClients) {
-          const s = io.sockets.sockets.get(clientId);
-          if (!s || s.id === socket.id) continue;
+          if (roomClients) {
+            for (const clientId of roomClients) {
+              const s = io.sockets.sockets.get(clientId);
+              if (!s || s.id === socket.id) continue;
 
-          users.push({
-            userId: s.id,
-            name: s.data.name,
-            colour: s.data.colour,
+              users.push({
+                userId: s.id,
+                name: s.data.name,
+                colour: s.data.colour,
+              });
+            }
+          }
+
+          socket.emit("new-user", users);
+
+          socket.to(data.id).emit("user-colour", {
+            userId: socket.id,
+            name: data.name,
+            colour,
           });
+        } catch (error) {
+          callback(`Failed join: ${error}`, false);
         }
       }
-
-      socket.emit("new-user", users);
-
-      socket.to(room).emit("user-colour", { userId: socket.id, name, colour });
-    });
+    );
 
     socket.on("mouse-move", (pos: Point) => {
       const room: string = socket.data.room;

@@ -62,47 +62,19 @@ const getCodeSession = async (
   }
 };
 
-const handleConnection = async (
-  req: Request<{ id: string }>,
-  res: Response<ApiResponse<boolean>>
-) => {
-  const id = parseInt(req.params.id);
-
-  if (isNaN(id) || id <= 0) {
-    return responseHandler(res, 401, false, "Invalid id.");
-  }
-
-  try {
-    const requestQeury = "SELECT password FROM sessions WHERE id=$1";
-
-    const data = await db.query(requestQeury, [id]);
-    let isPassword: boolean = true;
-
-    if (data.rows.length === 0) {
-      return responseHandler(res, 404, false, "Session not found.");
-    }
-
-    console.log(data.rows[0]);
-
-    if (data.rows[0].password === null) {
-      isPassword = false;
-    }
-
-    return responseHandler(res, 200, true, isPassword);
-  } catch (error) {
-    errorCatchHandler(error, res);
-  }
-};
-
 const handleCheking = async (
   req: Request<{ id: string }>,
   res: Response<ApiResponse<boolean>>
 ) => {
   const id = parseInt(req.params.id);
-  const { password } = req.body;
+  const { password, name } = req.body;
 
   if (isNaN(id) || id <= 0) {
     return responseHandler(res, 401, false, "Invalid id.");
+  }
+
+  if (!name || name.trim() === "") {
+    return responseHandler(res, 401, false, "The name must be filled in!");
   }
 
   try {
@@ -121,4 +93,4 @@ const handleCheking = async (
   }
 };
 
-export { createCodeSession, getCodeSession, handleConnection, handleCheking };
+export { createCodeSession, getCodeSession, handleCheking };

@@ -4,22 +4,33 @@ import { СustomCursor } from "./custom_cursor";
 import { useCursor } from "../hooks/use_curcor_point";
 import { useOtherCursors } from "../hooks/other_cursors";
 import { CodeRedacrtor } from "./code_redactor";
-import { useCode } from "../hooks/use_code";
+import { useCode } from "../hooks/useSessionInfo";
 import type { EditorView } from "@codemirror/view";
 import type { NewCode, VersionType } from "../types/interfaces";
 import { GetNewVersion } from "./getNewVersion";
 import { SaveChangesSession } from "./saveChanges";
 import { UserInfo } from "./users_in_room_info";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useJoinRoom } from "../hooks/joinRoomSocket";
 
-export default function Connection({ id, name }: { id: string; name: string }) {
+export default function Connection() {
+  const { id } = useParams<string>();
   const socket = useSocket();
   const { mousePos, handleMouse, isVisible, handleMouseLeave } = useCursor();
   const editorViewRef = useRef<EditorView | null>(null);
   const cursors = useOtherCursors();
   const [version, setVersion] = useState<VersionType | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  if (!id) return null;
-  const { setSessionInfo, sessionInfo, getRequest } = useCode(id, name);
+  useEffect(() => {
+    if (!id || !location.state || !location.state?.name) {
+      navigate("/");
+    }
+  }, [id, location.state]);
+
+  useJoinRoom(id!, location.state?.name);
+  const { setSessionInfo, sessionInfo, getRequest } = useCode(id!);
 
   useEffect(() => {
     getRequest();
@@ -77,11 +88,11 @@ export default function Connection({ id, name }: { id: string; name: string }) {
           editorViewRef={editorViewRef}
           version={version}
         ></CodeRedacrtor>
-        <GetNewVersion id={id} setVersion={setVersion} />
+        <GetNewVersion id={id!} setVersion={setVersion} />
         <SaveChangesSession
           content={editorViewRef?.current?.state.doc.toString() ?? ""}
           originalContent={sessionInfo?.content ?? ""}
-          id={id}
+          id={id!}
           setOriginalContent={setSessionInfo}
         />
         <UserInfo cursors={cursors} />
