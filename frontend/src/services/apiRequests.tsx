@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { SessionType, VersionType } from "../types/interfaces";
 import type React from "react";
+import { socket } from "../socket/connection";
 
 export function APIRequests() {
   const createNewSession = async (data: SessionType) => {
@@ -37,6 +38,7 @@ export function APIRequests() {
       "\n id to change:",
       id
     );
+
     try {
       const response = await axios.post(
         `http://localhost:3000/sessions/${id}`,

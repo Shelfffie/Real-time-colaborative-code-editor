@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import type { Point } from "../types/models";
 import { getRandomColour } from "../utils/random_colour";
+import { saveChanges } from "../controllers/socket_controllers";
 
 const roomMemory = new Map<string, string>();
 
@@ -64,6 +65,31 @@ export const socketConn = (io: Server) => {
 
       io.to(room).emit("new-code", { userId: socket.id, value });
     });
+
+    socket.on(
+      "handleChanges",
+      async (
+        data: {
+          id: string;
+          content: string;
+          description: string;
+        },
+        callback: (result: string, success: boolean) => void
+      ) => {
+        const sessionId = parseInt(data.id);
+        if (isNaN(sessionId) || sessionId <= 0)
+          return callback("Invalid id.", false);
+        const userName = socket.data.name;
+
+        saveChanges(
+          sessionId,
+          data.content,
+          data.description,
+          userName,
+          callback
+        );
+      }
+    );
 
     socket.on("disconnecting", () => {
       const room: string = socket.data.room;

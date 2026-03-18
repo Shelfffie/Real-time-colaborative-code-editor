@@ -1,6 +1,6 @@
-import { APIRequests } from "../services/apiRequests";
 import React, { useState, useEffect, useRef } from "react";
 import type { SessionType } from "../types/interfaces";
+import { SocketAPI } from "../services/socketAPI";
 
 export function SaveChangesSession({
   originalContent,
@@ -18,7 +18,7 @@ export function SaveChangesSession({
   const [description, setDescription] = useState<string>("");
   const [warning, setWarning] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { saveChanges } = APIRequests();
+  const { saveChanges } = SocketAPI();
 
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
