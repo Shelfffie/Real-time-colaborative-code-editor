@@ -80,7 +80,8 @@ export const socketConn = (io: Server) => {
         if (isNaN(sessionId) || sessionId <= 0)
           return callback("Invalid id.", false);
         const userName = socket.data.name;
-
+        if (!userName.trim())
+          return callback("The name cannot be empty.", false);
         saveChanges(
           sessionId,
           data.content,

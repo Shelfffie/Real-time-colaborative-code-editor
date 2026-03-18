@@ -14,11 +14,12 @@ export const saveChanges = async (
     const data = await db.query(putQuery, [content, id]);
     const session = data.rows[0];
     const copyQuery =
-      "INSERT INTO changes_history (session_id, title, content, version, description) VALUES($1, $2, $3, COALESCE((SELECT MAX(version) FROM changes_history WHERE session_id=$1), 0) + 1, $4 )";
+      "INSERT INTO changes_history (session_id, title, content, version, changed_by ,description) VALUES($1, $2, $3, COALESCE((SELECT MAX(version) FROM changes_history WHERE session_id=$1), 0) + 1, $4, $5 )";
     await db.query(copyQuery, [
       session.id,
       session.title,
       content,
+      name,
       description,
     ]);
     await db.query("COMMIT");
