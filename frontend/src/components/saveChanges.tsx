@@ -1,13 +1,18 @@
 import { APIRequests } from "../services/apiRequests";
 import React, { useState, useEffect, useRef } from "react";
+import type { SessionType } from "../types/interfaces";
 
 export function SaveChangesSession({
   originalContent,
   content,
+  setOriginalContent,
   id,
 }: {
   originalContent: string | null;
   content: string | null;
+  setOriginalContent: React.Dispatch<
+    React.SetStateAction<SessionType | undefined>
+  >;
   id: string;
 }) {
   const [description, setDescription] = useState<string>("");
@@ -47,7 +52,7 @@ export function SaveChangesSession({
     setDescription("");
     setWarning("");
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    saveChanges(id, originalContent, description);
+    saveChanges(id, content, description, setOriginalContent);
   };
 
   return (

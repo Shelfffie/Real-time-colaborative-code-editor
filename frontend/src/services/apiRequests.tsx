@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { SessionType, VersionType } from "../types/interfaces";
+import type React from "react";
 
 export function APIRequests() {
   const createNewSession = async (data: SessionType) => {
@@ -23,8 +24,19 @@ export function APIRequests() {
   const saveChanges = async (
     id: string,
     content: string,
-    description: string
+    description: string,
+    setOriginalContent: React.Dispatch<
+      React.SetStateAction<SessionType | undefined>
+    >
   ) => {
+    console.log(
+      "Saved changes:",
+      content,
+      "\n description:",
+      description,
+      "\n id to change:",
+      id
+    );
     try {
       const response = await axios.post(
         `http://localhost:3000/sessions/${id}`,
@@ -32,6 +44,7 @@ export function APIRequests() {
       );
       if (response.status === 200) {
         console.log("Changes are saved!");
+        setOriginalContent((prev) => ({ ...prev!, content: content }));
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

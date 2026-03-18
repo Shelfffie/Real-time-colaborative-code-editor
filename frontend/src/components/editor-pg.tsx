@@ -19,7 +19,7 @@ export default function Connection({ id, name }: { id: string; name: string }) {
   const [version, setVersion] = useState<VersionType | null>(null);
 
   if (!id) return null;
-  const { sessionInfo, getRequest } = useCode(id, name);
+  const { setSessionInfo, sessionInfo, getRequest } = useCode(id, name);
 
   useEffect(() => {
     getRequest();
@@ -82,6 +82,7 @@ export default function Connection({ id, name }: { id: string; name: string }) {
           content={editorViewRef?.current?.state.doc.toString() ?? ""}
           originalContent={sessionInfo?.content ?? ""}
           id={id}
+          setOriginalContent={setSessionInfo}
         />
         <UserInfo cursors={cursors} />
       </div>
