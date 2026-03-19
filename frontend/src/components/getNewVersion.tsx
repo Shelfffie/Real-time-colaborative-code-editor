@@ -32,6 +32,7 @@ export function GetNewVersion({
             {versionHistory.map((ver) => (
               <li key={ver.version}>
                 <p>Version: {ver.version}</p>
+                <p>Changer: {ver.changed_by}</p>
                 <button onClick={() => getVersionInfo(ver.version)}>
                   Повернутися до версії {ver.version}:
                 </button>

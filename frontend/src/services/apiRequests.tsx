@@ -95,7 +95,7 @@ export function APIRequests() {
         `http://localhost:3000/sessions/${id}/version`
       );
       if (response.status === 200) {
-        console.log("Versions are got!");
+        console.log("Versions are got!:", response.data.data);
         setData(response.data.data);
       }
     } catch (error: unknown) {
