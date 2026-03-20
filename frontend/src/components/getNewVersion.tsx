@@ -14,6 +14,7 @@ export function GetNewVersion({
     null
   );
   const [isReturned, setIsReturned] = useState<boolean>(false);
+  const [isHided, setIsHided] = useState<boolean>(false);
 
   const getHistory = () => {
     getVerionHistory(id, setVersionHistory);
@@ -32,8 +33,11 @@ export function GetNewVersion({
             Get history
           </button>
           {versionHistory && (
-            <button onClick={() => getHistory()} className="get-history-button">
-              Hide
+            <button
+              onClick={() => setIsHided(!isHided)}
+              className="get-history-button"
+            >
+              {isHided ? "Show" : "Hide"}
             </button>
           )}
         </section>
@@ -49,7 +53,7 @@ export function GetNewVersion({
           Undo
         </button>
       )}
-      {versionHistory && (
+      {versionHistory && !isHided && (
         <section>
           <ul className="versions-history">
             {versionHistory.map((ver) => (
