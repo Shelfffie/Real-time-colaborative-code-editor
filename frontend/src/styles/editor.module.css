@@ -1,7 +1,0 @@
-.editor-container {
-  width: 80%;
-  height: 90vh;
-  border: 2px solid black;
-  box-sizing: border-box;
-  overflow-y: scroll;
-}

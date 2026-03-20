@@ -2,6 +2,8 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { CreateSession } from "./pages/create_new_sessions";
 import Connection from "./components/editor-pg";
 import { StartPage } from "./pages/start_page";
+import "./styles/global.css";
+import "./styles/session-page.css";
 
 function App() {
   return (

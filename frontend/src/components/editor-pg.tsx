@@ -79,23 +79,28 @@ export default function Connection() {
         />
       ))}
       <div
-        style={{ height: "100vh", width: "100vw", cursor: "none" }}
         onMouseMove={handleMouse}
         onMouseLeave={handleMouseLeave}
+        className="page"
       >
-        <CodeRedacrtor
-          content={sessionInfo?.content}
-          editorViewRef={editorViewRef}
-          version={version}
-        ></CodeRedacrtor>
-        <GetNewVersion id={id!} setVersion={setVersion} />
-        <SaveChangesSession
-          content={editorViewRef?.current?.state.doc.toString() ?? ""}
-          originalContent={sessionInfo?.content ?? ""}
-          id={id!}
-          setOriginalContent={setSessionInfo}
-        />
-        <UserInfo cursors={cursors} />
+        <section className="add-info">
+          <h1>{sessionInfo?.title}</h1>
+          <SaveChangesSession
+            content={editorViewRef?.current?.state.doc.toString() ?? ""}
+            originalContent={sessionInfo?.content ?? ""}
+            id={id!}
+            setOriginalContent={setSessionInfo}
+          />
+          <UserInfo cursors={cursors} />
+          <GetNewVersion id={id!} setVersion={setVersion} />
+        </section>
+        <main className="editor-section">
+          <CodeRedacrtor
+            content={sessionInfo?.content}
+            editorViewRef={editorViewRef}
+            version={version}
+          />
+        </main>
       </div>
     </>
   );

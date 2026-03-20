@@ -24,34 +24,54 @@ export function GetNewVersion({
   };
 
   return (
-    <div>
+    <section className="versions-section">
+      <div>
+        <h2>Versions:</h2>
+        <section className="versions-buttons">
+          <button onClick={() => getHistory()} className="get-history-button">
+            Get history
+          </button>
+          {versionHistory && (
+            <button onClick={() => getHistory()} className="get-history-button">
+              Hide
+            </button>
+          )}
+        </section>
+      </div>
+      {isReturned && (
+        <button
+          onClick={() => {
+            setIsReturned(false);
+            setVersion(null);
+          }}
+          className="undo-button"
+        >
+          Undo
+        </button>
+      )}
       {versionHistory && (
-        <div>
-          <h2>Versions:</h2>
-          <ul>
+        <section>
+          <ul className="versions-history">
             {versionHistory.map((ver) => (
-              <li key={ver.version}>
-                <p>Version: {ver.version}</p>
-                <p>Changer: {ver.changed_by}</p>
-                <button onClick={() => getVersionInfo(ver.version)}>
-                  Повернутися до версії {ver.version}:
-                </button>
+              <li key={ver.version} className="version-element">
+                <p>
+                  {ver.version}. {ver.description}
+                </p>
+
+                <aside>
+                  <h4>Changer: {ver.changed_by}</h4>
+                  <button
+                    onClick={() => getVersionInfo(ver.version)}
+                    className="rollback-btn"
+                  >
+                    Rollback {ver.version}
+                  </button>
+                </aside>
               </li>
             ))}
           </ul>
-          {isReturned && (
-            <button
-              onClick={() => {
-                setIsReturned(false);
-                setVersion(null);
-              }}
-            >
-              Скасувати
-            </button>
-          )}
-        </div>
+        </section>
       )}
-      <button onClick={() => getHistory()}>Get version history.</button>
-    </div>
+    </section>
   );
 }

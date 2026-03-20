@@ -56,15 +56,23 @@ export function SaveChangesSession({
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <p>Description:</p>
-      <input
-        type="text"
-        value={description}
-        placeholder="Description"
-        onChange={(e) => handleDesc(e)}
-      />
-      <button type="submit">Зберегти зміни</button>
+    <form onSubmit={(e) => handleSubmit(e)} className="save-changes-section">
+      <h2>Save changes:</h2>
+      <section className="save-changes-input-button">
+        <input
+          type="text"
+          value={description}
+          placeholder="Description"
+          onChange={(e) => handleDesc(e)}
+        />
+        <button type="submit">
+          <img
+            src="/icons/save_img.png"
+            alt="Save changes button"
+            className="save-btn-img"
+          />
+        </button>
+      </section>
       <p>{warning}</p>
     </form>
   );

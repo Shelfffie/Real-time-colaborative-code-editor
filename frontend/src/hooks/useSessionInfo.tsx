@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSocket } from "../socket/socketContext";
 import axios from "axios";
 import type { SessionType } from "../types/interfaces";
@@ -15,6 +15,8 @@ export function useCode(id: string) {
           if (exist) {
             sessionData.content = data;
           }
+          console.log(response.data.data);
+
           setSessionInfo(sessionData);
         });
       }

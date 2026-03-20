@@ -1,0 +1,40 @@
+* {
+  font-family: "Datatype", monospace;
+  src: ("/public/fonts/Datatype_ExtraCondensed-Thin.ttf");
+
+  font-optical-sizing: auto;
+  font-weight: 210;
+  font-style: normal;
+  font-variation-settings: "wdth" 75.3;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.cm-scroller {
+  overflow-x: visible !important;
+}
+
+.cm-editor.cm-focused {
+  outline: none;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 28px;
+  margin: 15px 0;
+}
+
+p {
+  font-size: 18px;
+}
+
+button {
+  background-color: #d9d9d9;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 15px;
+}

@@ -30,7 +30,6 @@ import {
   closeBracketsKeymap,
 } from "@codemirror/autocomplete";
 import { lintKeymap } from "@codemirror/lint";
-import styles from "../styles/editor.module.css";
 import type { CodeRedacorProps } from "../types/interfaces";
 import { useSocket } from "../socket/socketContext";
 
@@ -62,6 +61,7 @@ export function CodeRedacrtor({
         highlightActiveLine(),
         highlightActiveLineGutter(),
         highlightSelectionMatches(),
+
         keymap.of([
           ...closeBracketsKeymap,
           ...defaultKeymap,
@@ -110,5 +110,5 @@ export function CodeRedacrtor({
     });
   }, [content, version]);
 
-  return <div ref={editorRef} className={styles["editor-container"]} />;
+  return <div ref={editorRef} className="editor-container" />;
 }
