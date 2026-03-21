@@ -1,13 +1,19 @@
-import { RoomJoinForm } from "../components/session_join";
-import { useState } from "react";
+import React from "react";
+import styles from "../styles/forms.module.css";
+import { JoinTheRoomForm } from "../components/join_room_forms_inputs";
+import { useNavigate } from "react-router-dom";
 
-export function StartPage() {
-  const [nameAndRoom, setNameAndRoom] = useState<Record<string, string>>({
-    name: "",
-    id: "",
-  });
-
+export function RoomJoinPage() {
+  const navigate = useNavigate();
   return (
-    <RoomJoinForm nameAndRoom={nameAndRoom} setNameAndRoom={setNameAndRoom} />
+    <div className={styles["page-form"]}>
+      <main className={styles["form"]}>
+        <h1>Join the session</h1>
+        <JoinTheRoomForm />
+      </main>
+      <p className={styles["src"]} onClick={() => navigate("/create")}>
+        Create new session
+      </p>
+    </div>
   );
 }

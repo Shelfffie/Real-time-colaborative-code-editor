@@ -41,3 +41,9 @@ export interface RoomStatus {
   inRoom: boolean | null;
   isPassword: boolean;
 }
+
+export interface returnedSession {
+  id: string | undefined;
+  title: string;
+  content: string;
+}

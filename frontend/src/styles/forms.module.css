@@ -57,12 +57,12 @@
 
 .src {
   cursor: pointer;
-  text-decoration: underline rgba(255, 255, 255, 0);
   transition: all 0.3s ease;
+  text-decoration: underline;
   transition: text-decoration-color 300ms;
 }
 
 .src:hover {
-  color: #272727;
-  text-decoration-color: rgba(0, 0, 0, 1);
+  color: #3e3e3e;
+  text-decoration-color: #3e3e3e;
 }

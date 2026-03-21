@@ -1,15 +1,15 @@
 import { useSocket } from "../socket/socketContext";
 import { useEffect, useRef, useState } from "react";
-import { СustomCursor } from "./custom_cursor";
+import { СustomCursor } from "../components/custom_cursor";
 import { useCursor } from "../hooks/use_curcor_point";
 import { useOtherCursors } from "../hooks/other_cursors";
-import { CodeRedacrtor } from "./code_redactor";
+import { CodeRedacrtor } from "../components/code_redactor";
 import { useCode } from "../hooks/useSessionInfo";
 import type { EditorView } from "@codemirror/view";
 import type { NewCode, VersionType } from "../types/interfaces";
-import { GetNewVersion } from "./getNewVersion";
-import { SaveChangesSession } from "./saveChanges";
-import { UserInfo } from "./users_in_room_info";
+import { GetNewVersion } from "../components/getNewVersion";
+import { SaveChangesSession } from "../components/saveChanges";
+import { UserInfo } from "../components/users_in_room_info";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useJoinRoom } from "../hooks/joinRoomSocket";
 

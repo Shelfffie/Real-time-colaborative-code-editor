@@ -4,12 +4,12 @@ import { useErrorMessageHandler } from "../utils/errorMessageHandler";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function JoinTheRoomForm({ room }: { room?: string }) {
+export function JoinTheRoomForm({ room }: { room?: string | undefined }) {
   const [password, setPassword] = useState<string>("");
   const { warning, setWarning } = useErrorMessageHandler();
   const [nameAndRoom, setNameAndRoom] = useState<Record<string, string>>({
     name: "",
-    id: room ?? "",
+    id: String(room) ?? "",
   });
   const navigate = useNavigate();
 
@@ -25,6 +25,8 @@ export function JoinTheRoomForm({ room }: { room?: string }) {
   };
 
   const hadnleSend = async () => {
+    console.log(nameAndRoom.id);
+
     if (
       nameAndRoom.id.trim() === "" ||
       isNaN(parseInt(nameAndRoom.id)) ||

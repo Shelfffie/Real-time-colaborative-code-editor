@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../styles/forms.module.css";
-import { JoinTheRoomForm } from "./join_room_forms_inputs";
+import { JoinTheRoomForm } from "../components/join_room_forms_inputs";
 import { useNavigate } from "react-router-dom";
 
 export function RoomJoinForm({}: {
