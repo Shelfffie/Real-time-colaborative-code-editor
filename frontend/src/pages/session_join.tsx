@@ -14,7 +14,7 @@ export function RoomJoinForm({}: {
         <h1>Join the session</h1>
         <JoinTheRoomForm />
       </main>
-      <p className={styles["src"]} onClick={() => navigate("/create")}>
+      <p className="src" onClick={() => navigate("/create")}>
         Create new session
       </p>
     </div>

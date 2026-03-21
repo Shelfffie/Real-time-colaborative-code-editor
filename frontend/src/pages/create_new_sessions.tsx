@@ -36,8 +36,8 @@ export function CreateSession() {
 
   return (
     <div className={styles["page-form"]}>
+      <h1>Create new session</h1>
       <form onSubmit={(e) => handleSubmit(e)} className={styles["form"]}>
-        <h1>Create new session</h1>
         <section>
           <label htmlFor="title">Title</label>
           <input
@@ -78,7 +78,7 @@ export function CreateSession() {
 
         <button type="submit">Create the session</button>
       </form>
-      <p className={styles["src"]} onClick={() => navigate("/")}>
+      <p className="src" onClick={() => navigate("/")}>
         Join existing session
       </p>
     </div>

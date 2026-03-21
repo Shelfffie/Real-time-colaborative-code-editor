@@ -33,7 +33,6 @@ export function useJoinRoom(id: string, name: string) {
 
     return () => {
       socket.off("connect", connectHandler);
-      socket.disconnect();
       console.log("disconnected connect!");
     };
   }, [id, socket, name]);

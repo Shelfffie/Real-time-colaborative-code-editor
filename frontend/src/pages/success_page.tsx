@@ -14,25 +14,28 @@ export function SuccesPage() {
   const [data, setData] = useState<returnedSession>(location.state.data);
   return (
     <div className={styles["page-form"]}>
-      <main className={styles["form"]}>
-        <h1>Room has been created!</h1>
-        {location.state && (
-          <>
-            <p>Id: {data?.id}</p>
-            <p>Title: {data?.title}</p>
-          </>
-        )}
-        <h2 className={styles["src"]} onClick={() => navigate("/")}>
-          Go to the join page
-        </h2>
-
-        {location.state && (
-          <>
-            <p>or</p>
-            <h2>Join your room:</h2>
-            <JoinTheRoomForm room={data.id} />
-          </>
-        )}
+      <h1>Room has been created!</h1>
+      <main className={styles["success-form"]}>
+        <section>
+          {location.state && (
+            <>
+              <p>Id: {data?.id}</p>
+              <p>Title: {data?.title}</p>
+            </>
+          )}
+          <h2 className="src" onClick={() => navigate("/")}>
+            Go to the join page
+          </h2>
+        </section>
+        <p>or</p>
+        <section>
+          {location.state && (
+            <>
+              <h2>Join your room:</h2>
+              <JoinTheRoomForm room={data.id} />
+            </>
+          )}
+        </section>
       </main>
     </div>
   );

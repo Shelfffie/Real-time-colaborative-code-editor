@@ -30,19 +30,11 @@ export default function Connection() {
   }, [id, location.state]);
 
   useJoinRoom(id!, location.state?.name);
-  const { setSessionInfo, sessionInfo, getRequest } = useCode(id!);
-
-  useEffect(() => {
-    getRequest();
-    console.log("Connection mounted");
-  }, [id]);
+  const { setSessionInfo, sessionInfo } = useCode(id!);
 
   useEffect(() => {
     if (!socket) return;
     const handler = (newCode: NewCode) => {
-      console.log("socket connected:", socket.connected);
-      console.log("socket event", newCode);
-      console.log("editorRef", editorViewRef.current);
       const view = editorViewRef.current;
       if (!view) return;
 
@@ -66,6 +58,10 @@ export default function Connection() {
     };
   }, [socket]);
 
+  if (!sessionInfo) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       {isVisible && <СustomCursor x={mousePos.x} y={mousePos.y} />}
@@ -84,6 +80,9 @@ export default function Connection() {
         className="page"
       >
         <section className="add-info">
+          <p className="src cursor-btn" onClick={() => navigate("/")}>
+            Return to home page
+          </p>
           <h1>{sessionInfo?.title}</h1>
           <SaveChangesSession
             content={editorViewRef?.current?.state.doc.toString() ?? ""}

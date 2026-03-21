@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSocket } from "../socket/socketContext";
 import axios from "axios";
 import type { SessionType } from "../types/interfaces";
+
 export function useCode(id: string) {
   const [sessionInfo, setSessionInfo] = useState<SessionType>();
   const socket = useSocket();
 
   const getRequest = async () => {
+    console.log("Use session info:", id);
+
     try {
       const response = await axios.get(`http://localhost:3000/sessions/${id}`);
       if (response.status === 200) {
@@ -15,10 +18,11 @@ export function useCode(id: string) {
           if (exist) {
             sessionData.content = data;
           }
-          console.log(response.data.data);
+          console.log("Use session info:", response.data.data);
 
           setSessionInfo(sessionData);
         });
+        console.log("Use session info");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -32,5 +36,21 @@ export function useCode(id: string) {
     }
   };
 
-  return { setSessionInfo, sessionInfo, getRequest };
+  useEffect(() => {
+    const doRequest = () => {
+      getRequest();
+    };
+
+    if (socket.connected) {
+      doRequest();
+    } else {
+      socket.once("connect", doRequest);
+    }
+
+    return () => {
+      socket.off("connect", doRequest);
+    };
+  }, [id, socket]);
+
+  return { setSessionInfo, sessionInfo };
 }

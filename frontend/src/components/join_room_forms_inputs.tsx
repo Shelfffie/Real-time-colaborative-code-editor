@@ -9,7 +9,7 @@ export function JoinTheRoomForm({ room }: { room?: string | undefined }) {
   const { warning, setWarning } = useErrorMessageHandler();
   const [nameAndRoom, setNameAndRoom] = useState<Record<string, string>>({
     name: "",
-    id: String(room) ?? "",
+    id: room ? String(room) : "",
   });
   const navigate = useNavigate();
 

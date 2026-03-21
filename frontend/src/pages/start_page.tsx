@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "../styles/forms.module.css";
 import { JoinTheRoomForm } from "../components/join_room_forms_inputs";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ export function RoomJoinPage() {
         <h1>Join the session</h1>
         <JoinTheRoomForm />
       </main>
-      <p className={styles["src"]} onClick={() => navigate("/create")}>
+      <p className="src" onClick={() => navigate("/create")}>
         Create new session
       </p>
     </div>

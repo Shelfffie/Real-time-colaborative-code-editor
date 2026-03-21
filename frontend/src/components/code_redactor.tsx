@@ -5,11 +5,8 @@ import {
   keymap,
   ViewUpdate,
   highlightSpecialChars,
-  drawSelection,
   highlightActiveLine,
-  dropCursor,
   rectangularSelection,
-  crosshairCursor,
   lineNumbers,
   highlightActiveLineGutter,
 } from "@codemirror/view";
@@ -91,7 +88,7 @@ export function CodeRedacrtor({
     return () => {
       view.destroy();
     };
-  }, [socket]);
+  }, [socket, content, editorRef]);
 
   useEffect(() => {
     if (!editorViewRef.current) return;

@@ -2,22 +2,22 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   margin: 0 auto;
   padding: 20px 0;
   width: 100%;
   min-height: 100vh;
-  max-width: 1440px;
+  max-width: 1840px;
   cursor: none;
-  background-color: #f7f7f7;
 }
 
 .editor-section {
-  margin: 10px;
+  margin-left: 2%;
   width: 70%;
 }
 
 .editor-container {
-  width: 100%;
+  width: 95%;
   height: 100%;
   border: 2px solid black;
   border-radius: 5px;
