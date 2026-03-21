@@ -6,7 +6,8 @@ export function APIRequests() {
   const createNewSession = async (data: SessionType, password: string) => {
     try {
       const response = await axios.post(`http://localhost:3000/sessions`, {
-        data,
+        title: data.title,
+        content: data.content,
         password,
       });
       if (response.status === 200) {

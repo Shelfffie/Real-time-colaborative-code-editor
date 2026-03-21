@@ -26,7 +26,7 @@ const createCodeSession = async (
 
     const sessionInfo = result.rows[0];
     const copyQuery =
-      "INSERT INTO changes_history (session_id, title, content, version, desctiption) VALUES($1, $2, $3, $4, $5)";
+      "INSERT INTO changes_history (session_id, title, content, version, description) VALUES($1, $2, $3, $4, $5)";
     await db.query(copyQuery, [
       sessionInfo.id,
       title,
