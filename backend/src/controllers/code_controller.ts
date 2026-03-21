@@ -8,7 +8,9 @@ const createCodeSession = async (
   res: Response<ApiResponse<SessionType>>
 ) => {
   try {
-    const { title, content } = req.body;
+    const { title, content, password } = req.body;
+    console.log(req.body);
+
     if (!title) {
       return responseHandler(
         res,
@@ -18,8 +20,8 @@ const createCodeSession = async (
       );
     }
     const insertQuery =
-      "INSERT INTO sessions (title, content) VALUES ($1, $2) RETURNING id, title, content";
-    const result = await db.query(insertQuery, [title, content]);
+      "INSERT INTO sessions (title, content, password) VALUES ($1, $2, $3) RETURNING id, title, content";
+    const result = await db.query(insertQuery, [title, content, password]);
     console.log("create new row. Go to copy creating...");
 
     const sessionInfo = result.rows[0];
