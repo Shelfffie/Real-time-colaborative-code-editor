@@ -3,9 +3,12 @@ import type { SessionType, VersionType } from "../types/interfaces";
 import type React from "react";
 
 export function APIRequests() {
-  const createNewSession = async (data: SessionType) => {
+  const createNewSession = async (data: SessionType, password: string) => {
     try {
-      const response = await axios.post(`http://localhost:3000/sessions`, data);
+      const response = await axios.post(`http://localhost:3000/sessions`, {
+        data,
+        password,
+      });
       if (response.status === 200) {
         console.log("New session created!");
       }

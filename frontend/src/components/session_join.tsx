@@ -64,6 +64,7 @@ export function RoomJoinForm({
       <input
         name="id"
         type="text"
+        autoComplete="off"
         value={nameAndRoom.id}
         onChange={(e) => handleNameChange(e, "id")}
       />
@@ -71,6 +72,7 @@ export function RoomJoinForm({
       <input
         name="password"
         type="password"
+        autoComplete="new-password"
         value={password}
         onChange={(e) => handlePasswordChange(e)}
       />

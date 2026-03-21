@@ -5,6 +5,7 @@ import type { SessionType } from "../types/interfaces";
 export function CreateSession() {
   const { createNewSession } = APIRequests();
   const [value, setValue] = useState<SessionType>({ title: "", content: "" });
+  const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const handleChange = (
@@ -12,6 +13,10 @@ export function CreateSession() {
     element: keyof SessionType
   ) => {
     setValue({ ...value, [element]: event.target.value });
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
   };
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
@@ -24,19 +29,31 @@ export function CreateSession() {
       }, 3000);
     }
 
-    await createNewSession(value);
+    await createNewSession(value, password);
   };
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
+      <label htmlFor="title">Title</label>
       <input
+        name="title"
         type="text"
         placeholder="Title"
         value={value.title}
         onChange={(event) => handleChange(event, "title")}
       />
+      <label htmlFor="password">Password:</label>
+      <input
+        name="password"
+        type="password"
+        autoComplete="new-password"
+        value={password}
+        onChange={(e) => handlePasswordChange(e)}
+      />
+      <p>*if you want a session without a password, leave the field blank</p>
+      <label htmlFor="content">Initial content</label>
       <textarea
-        name=""
+        name="content"
         id=""
         placeholder="Content"
         value={value.content || ""}
