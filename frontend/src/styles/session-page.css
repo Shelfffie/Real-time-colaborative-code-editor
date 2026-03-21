@@ -146,3 +146,15 @@
 .rollback-btn {
   width: 100px;
 }
+
+.cursor-btn {
+  cursor: none;
+}
+
+.cursor-btn:hover {
+  cursor: none;
+}
+
+.cursor-btn:active {
+  cursor: none;
+}

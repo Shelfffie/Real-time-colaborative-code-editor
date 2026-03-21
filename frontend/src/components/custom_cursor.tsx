@@ -17,6 +17,7 @@ export function СustomCursor({
           left: x,
           top: y,
           pointerEvents: "none",
+          zIndex: 1000,
           transition: isOthers ? "all 0.5s ease" : "none",
         }}
         width="124"

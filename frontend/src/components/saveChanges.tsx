@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import type { SessionType } from "../types/interfaces";
 import { SocketAPI } from "../services/socketAPI";
+import { useErrorMessageHandler } from "../utils/errorMessageHandler";
 
 export function SaveChangesSession({
   originalContent,
@@ -16,9 +17,9 @@ export function SaveChangesSession({
   id: string;
 }) {
   const [description, setDescription] = useState<string>("");
-  const [warning, setWarning] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { saveChanges } = SocketAPI();
+  const { warning, setWarning } = useErrorMessageHandler();
 
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -65,7 +66,7 @@ export function SaveChangesSession({
           placeholder="Description"
           onChange={(e) => handleDesc(e)}
         />
-        <button type="submit">
+        <button type="submit" className="cursor-btn">
           <img
             src="/icons/save_img.png"
             alt="Save changes button"
@@ -73,7 +74,7 @@ export function SaveChangesSession({
           />
         </button>
       </section>
-      <p>{warning}</p>
+      <p className="error-message">{warning}</p>
     </form>
   );
 }

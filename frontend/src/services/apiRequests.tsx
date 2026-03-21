@@ -1,9 +1,12 @@
 import axios from "axios";
 import type { SessionType, VersionType } from "../types/interfaces";
 import type React from "react";
+import { useNavigate } from "react-router-dom";
 
 export function APIRequests() {
+  const navigate = useNavigate();
   const createNewSession = async (data: SessionType, password: string) => {
+    if (!data.title) return;
     try {
       const response = await axios.post(`http://localhost:3000/sessions`, {
         title: data.title,
@@ -12,6 +15,8 @@ export function APIRequests() {
       });
       if (response.status === 200) {
         console.log("New session created!");
+        console.log(response.data.data);
+        navigate("/success", { state: { data: response.data.data } });
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

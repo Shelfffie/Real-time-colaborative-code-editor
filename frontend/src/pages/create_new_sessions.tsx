@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { APIRequests } from "../services/apiRequests";
 import type { SessionType } from "../types/interfaces";
+import styles from "../styles/forms.module.css";
+import { useNavigate } from "react-router-dom";
+import { useErrorMessageHandler } from "../utils/errorMessageHandler";
 
 export function CreateSession() {
   const { createNewSession } = APIRequests();
   const [value, setValue] = useState<SessionType>({ title: "", content: "" });
   const [password, setPassword] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const { warning, setWarning } = useErrorMessageHandler();
+  const navigate = useNavigate();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -23,44 +27,60 @@ export function CreateSession() {
     event.preventDefault();
 
     if (value.title.trim() === "") {
-      setErrorMessage("The title must be filled in!");
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 3000);
+      setWarning("The title must be filled in!");
+      return;
     }
 
     await createNewSession(value, password);
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <label htmlFor="title">Title</label>
-      <input
-        name="title"
-        type="text"
-        placeholder="Title"
-        value={value.title}
-        onChange={(event) => handleChange(event, "title")}
-      />
-      <label htmlFor="password">Password:</label>
-      <input
-        name="password"
-        type="password"
-        autoComplete="new-password"
-        value={password}
-        onChange={(e) => handlePasswordChange(e)}
-      />
-      <p>*if you want a session without a password, leave the field blank</p>
-      <label htmlFor="content">Initial content</label>
-      <textarea
-        name="content"
-        id=""
-        placeholder="Content"
-        value={value.content || ""}
-        onChange={(event) => handleChange(event, "content")}
-      ></textarea>
-      <p>{errorMessage}</p>
-      <button type="submit">Create the session</button>
-    </form>
+    <div className={styles["page-form"]}>
+      <form onSubmit={(e) => handleSubmit(e)} className={styles["form"]}>
+        <h1>Create new session</h1>
+        <section>
+          <label htmlFor="title">Title</label>
+          <input
+            name="title"
+            type="text"
+            placeholder="Title"
+            value={value.title}
+            className={styles["inputEl"]}
+            onChange={(event) => handleChange(event, "title")}
+          />
+          <p className="error-message">{warning}</p>
+        </section>
+        <section>
+          <label htmlFor="password">Password:</label>
+          <input
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            value={password}
+            className={styles["inputEl"]}
+            onChange={(e) => handlePasswordChange(e)}
+          />
+          <p>
+            *if you want a session without a password, leave the field blank
+          </p>
+        </section>
+        <section>
+          <label htmlFor="content">Initial content</label>
+          <textarea
+            name="content"
+            id=""
+            placeholder="Content"
+            value={value.content || ""}
+            className={`${styles["inputEl"]} ${styles["textarea"]}`}
+            onChange={(event) => handleChange(event, "content")}
+          ></textarea>
+        </section>
+
+        <button type="submit">Create the session</button>
+      </form>
+      <p className={styles["src"]} onClick={() => navigate("/")}>
+        Join existing session
+      </p>
+    </div>
   );
 }

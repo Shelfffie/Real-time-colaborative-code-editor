@@ -29,13 +29,16 @@ export function GetNewVersion({
       <div>
         <h2>Versions:</h2>
         <section className="versions-buttons">
-          <button onClick={() => getHistory()} className="get-history-button">
+          <button
+            onClick={() => getHistory()}
+            className="get-history-button cursor-btn"
+          >
             Get history
           </button>
           {versionHistory && (
             <button
               onClick={() => setIsHided(!isHided)}
-              className="get-history-button"
+              className="get-history-button cursor-btn"
             >
               {isHided ? "Show" : "Hide"}
             </button>
@@ -48,7 +51,7 @@ export function GetNewVersion({
             setIsReturned(false);
             setVersion(null);
           }}
-          className="undo-button"
+          className="undo-button cursor-btn"
         >
           Undo
         </button>
@@ -66,7 +69,7 @@ export function GetNewVersion({
                   <h4>Changer: {ver.changed_by}</h4>
                   <button
                     onClick={() => getVersionInfo(ver.version)}
-                    className="rollback-btn"
+                    className="rollback-btn cursor-btn"
                   >
                     Rollback {ver.version}
                   </button>
