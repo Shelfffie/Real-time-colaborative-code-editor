@@ -84,6 +84,10 @@ const handleCheking = async (
 
     const data = await db.query(requestQeury, [id]);
 
+    if (data.rows.length === 0) {
+      return responseHandler(res, 404, false, "Session not found.");
+    }
+
     const dbPassword = data.rows[0].password ?? "";
     if (password !== dbPassword) {
       return responseHandler(res, 401, false, "Invalid password!");
