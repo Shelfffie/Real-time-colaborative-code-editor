@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import type { SessionType } from "../types/interfaces";
 import { SocketAPI } from "../services/socketAPI";
-import { useErrorMessageHandler } from "../utils/errorMessageHandler";
+import { useErrorMessageHandler } from "../hooks/errorMessageHandler";
 
 export function SaveChangesSession({
   originalContent,

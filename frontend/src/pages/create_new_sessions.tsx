@@ -3,7 +3,7 @@ import { APIRequests } from "../services/apiRequests";
 import type { SessionType } from "../types/interfaces";
 import styles from "../styles/forms.module.css";
 import { useNavigate } from "react-router-dom";
-import { useErrorMessageHandler } from "../utils/errorMessageHandler";
+import { useErrorMessageHandler } from "../hooks/errorMessageHandler";
 
 export function CreateSession() {
   const { createNewSession } = APIRequests();
