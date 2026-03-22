@@ -31,7 +31,7 @@ export function CreateSession() {
       return;
     }
 
-    await createNewSession(value, password);
+    await createNewSession(value, password, setWarning);
   };
 
   return (

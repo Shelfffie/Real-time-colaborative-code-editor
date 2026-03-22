@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSocket } from "../socket/socketContext";
 import axios from "axios";
 import type { SessionType } from "../types/interfaces";
+import { HandleCatchError } from "../utils/handleCatchedError";
 
 export function useCode(id: string) {
   const [sessionInfo, setSessionInfo] = useState<SessionType>();
@@ -25,14 +26,7 @@ export function useCode(id: string) {
         console.log("Use session info");
       }
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.log(
-          "Server error:",
-          error.response ? error.response.data : error.message
-        );
-      } else {
-        console.log("Unknown error:", error);
-      }
+      HandleCatchError(error);
     }
   };
 

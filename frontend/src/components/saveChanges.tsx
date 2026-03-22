@@ -53,7 +53,7 @@ export function SaveChangesSession({
     setDescription("");
     setWarning("");
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    saveChanges(id, content, description, setOriginalContent);
+    saveChanges(id, content, description, setOriginalContent, setWarning);
   };
 
   return (

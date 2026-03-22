@@ -9,7 +9,8 @@ export function SocketAPI() {
     description: string,
     setOriginalContent: React.Dispatch<
       React.SetStateAction<SessionType | undefined>
-    >
+    >,
+    setError: React.Dispatch<React.SetStateAction<string | null>>
   ) => {
     console.log(
       "Saved changes:",
@@ -29,6 +30,7 @@ export function SocketAPI() {
           setOriginalContent((prev) => ({ ...prev!, content: content }));
         } else {
           console.log("Error occured in socketAPI:", result);
+          setError(`${result}`);
         }
       }
     );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { VersionType } from "../types/interfaces";
 import { APIRequests } from "../services/apiRequests";
+import { useErrorMessageHandler } from "../hooks/errorMessageHandler";
 
 export function GetNewVersion({
   id,
@@ -15,13 +16,14 @@ export function GetNewVersion({
   );
   const [isReturned, setIsReturned] = useState<boolean>(false);
   const [isHided, setIsHided] = useState<boolean>(false);
+  const { warning, setWarning } = useErrorMessageHandler();
 
   const getHistory = () => {
-    getVerionHistory(id, setVersionHistory);
+    getVerionHistory(id, setVersionHistory, setWarning);
   };
 
   const getVersionInfo = (version: string) => {
-    getVersion(id, version, setVersion, setIsReturned);
+    getVersion(id, version, setVersion, setIsReturned, setWarning);
   };
 
   return (
@@ -44,6 +46,7 @@ export function GetNewVersion({
             </button>
           )}
         </section>
+        <p className="error-message">{warning}</p>
       </div>
       {isReturned && (
         <button
