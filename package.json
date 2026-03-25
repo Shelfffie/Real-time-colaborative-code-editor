@@ -1,6 +1,7 @@
 {
   "name": "real-time_collaborative_code_editor",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "workspaces": [
     "frontend",
